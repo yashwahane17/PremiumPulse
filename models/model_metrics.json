@@ -1,0 +1,93 @@
+{
+  "best_model": "Linear Regression",
+  "features": [
+    "age",
+    "bmi",
+    "children",
+    "is_male",
+    "is_smoker",
+    "obese",
+    "smoker_obese_interaction",
+    "smoker_bmi_interaction",
+    "age_squared",
+    "region_northeast",
+    "region_northwest",
+    "region_southeast",
+    "region_southwest"
+  ],
+  "usd_to_inr": 83.5,
+  "actuarial_rate": 0.055,
+  "evaluation_metrics": {
+    "Linear Regression": {
+      "mae_usd": 2315.52,
+      "mse_usd": 18161831.6,
+      "rmse_usd": 4261.67,
+      "r2_score": 0.883,
+      "mae_inr": 10634.04,
+      "rmse_inr": 19571.72
+    },
+    "Random Forest": {
+      "mae_usd": 2549.09,
+      "mse_usd": 20145227.38,
+      "rmse_usd": 4488.34,
+      "r2_score": 0.8702,
+      "mae_inr": 11706.68,
+      "rmse_inr": 20612.72
+    },
+    "XGBoost": {
+      "mae_usd": 2421.53,
+      "mse_usd": 19109636.46,
+      "rmse_usd": 4371.46,
+      "r2_score": 0.8769,
+      "mae_inr": 11120.9,
+      "rmse_inr": 20075.92
+    }
+  },
+  "feature_importances": {
+    "Random Forest": {
+      "age": 0.0555,
+      "bmi": 0.0133,
+      "children": 0.0105,
+      "is_male": 0.0007,
+      "is_smoker": 0.0059,
+      "obese": 0.0011,
+      "smoker_obese_interaction": 0.1153,
+      "smoker_bmi_interaction": 0.7305,
+      "age_squared": 0.0627,
+      "region_northeast": 0.0021,
+      "region_northwest": 0.0013,
+      "region_southeast": 0.0005,
+      "region_southwest": 0.0007
+    },
+    "XGBoost": {
+      "age": 0.0098,
+      "bmi": 0.0026,
+      "children": 0.0034,
+      "is_male": 0.0018,
+      "is_smoker": 0.0269,
+      "obese": 0.0018,
+      "smoker_obese_interaction": 0.7814,
+      "smoker_bmi_interaction": 0.1568,
+      "age_squared": 0.0074,
+      "region_northeast": 0.0026,
+      "region_northwest": 0.0021,
+      "region_southeast": 0.0015,
+      "region_southwest": 0.0018
+    },
+    "Linear Regression Coeffs": {
+      "age": 0.1285,
+      "bmi": 0.4087,
+      "children": 608.6901,
+      "is_male": -556.7396,
+      "is_smoker": 1444.2529,
+      "obese": 166.4389,
+      "smoker_obese_interaction": 15461.2324,
+      "smoker_bmi_interaction": 463.3282,
+      "age_squared": 331.5611,
+      "region_northeast": 630.1613,
+      "region_northwest": 205.0364,
+      "region_southeast": -128.9324,
+      "region_southwest": -706.2653
+    }
+  }
+}
