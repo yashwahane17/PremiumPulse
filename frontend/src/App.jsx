@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { RouterProvider, useRouter } from './context/RouterContext';
 import { ToastProvider, useToast } from './context/ToastContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { api } from './api/api';
 
 // Customer Layout & Modals
@@ -40,7 +41,7 @@ import AdminSettingsPage from './pages/admin/AdminSettingsPage';
 import { ShieldAlert, ArrowLeft, LogOut } from 'lucide-react';
 
 function AppContent() {
-  const { user, logout } = useAuth();
+  const { user, loading, logout } = useAuth();
   const { currentPath, navigate } = useRouter();
   const { showToast } = useToast();
 
@@ -53,6 +54,15 @@ function AppContent() {
   const [wearableModalOpen, setWearableModalOpen] = useState(false);
   const [compareModalOpen, setCompareModalOpen] = useState(false);
   const [compareHistoryData, setCompareHistoryData] = useState([]);
+
+  // Route redirection guard: safely execute in useEffect (never during render pass)
+  useEffect(() => {
+    if (!loading) {
+      if (user && (currentPath === '/login' || currentPath === '/auth' || currentPath === '/register')) {
+        navigate('/dashboard');
+      }
+    }
+  }, [user, loading, currentPath, navigate]);
 
   // Bridge legacy setActivePage calls to new URL router
   const handleSetActivePage = (page) => {
@@ -248,6 +258,17 @@ function AppContent() {
     );
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Loading PremiumPulse...</p>
+        </div>
+      </div>
+    );
+  }
+
   // =========================================================================
   // 2. PUBLIC VISITORS (LANDING / AUTH)
   // =========================================================================
@@ -265,8 +286,7 @@ function AppContent() {
 
   if (currentPath === '/login' || currentPath === '/auth') {
     if (user) {
-      navigate('/dashboard');
-      return null;
+      return null; // Redirection handled cleanly by useEffect
     }
     return (
       <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
@@ -281,14 +301,37 @@ function AppContent() {
 
   if (currentPath === '/register') {
     if (user) {
-      navigate('/dashboard');
-      return null;
+      return null; // Redirection handled cleanly by useEffect
     }
     return (
       <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
         <Navbar onOpenWearable={() => setWearableModalOpen(true)} />
         <main className="flex-1">
           <AuthPage initialMode="register" setActivePage={handleSetActivePage} />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (currentPath === '/forgot-password') {
+    return (
+      <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+        <Navbar onOpenWearable={() => setWearableModalOpen(true)} />
+        <main className="flex-1">
+          <AuthPage initialMode="forgot" setActivePage={handleSetActivePage} />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (currentPath === '/reset-password') {
+    return (
+      <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900">
+        <Navbar onOpenWearable={() => setWearableModalOpen(true)} />
+        <main className="flex-1">
+          <AuthPage initialMode="reset" setActivePage={handleSetActivePage} />
         </main>
         <Footer />
       </div>
@@ -389,14 +432,66 @@ function AppContent() {
   );
 }
 
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("ErrorBoundary caught an error:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-6 text-center">
+          <div className="max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 shadow-xl space-y-4">
+            <div className="w-12 h-12 rounded-2xl bg-rose-100 dark:bg-rose-950/60 text-rose-600 flex items-center justify-center mx-auto">
+              <ShieldAlert className="w-6 h-6" />
+            </div>
+            <h2 className="text-lg font-black text-slate-900 dark:text-white">Render Recovery Notice</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
+              {this.state.error?.message || 'An unexpected rendering error occurred.'}
+            </p>
+            <div className="pt-2 flex gap-3 justify-center">
+              <button
+                onClick={() => { this.setState({ hasError: false, error: null }); window.location.href = '/dashboard'; }}
+                className="px-5 py-2.5 rounded-xl bg-[#3867FF] hover:bg-[#2954e6] text-white text-xs font-bold shadow-md cursor-pointer transition-colors"
+              >
+                Go to Dashboard
+              </button>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+              >
+                Reload App
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function App() {
   return (
-    <ToastProvider>
-      <RouterProvider>
-        <AuthProvider>
-          <AppContent />
-        </AuthProvider>
-      </RouterProvider>
-    </ToastProvider>
+    <ThemeProvider>
+      <ToastProvider>
+        <RouterProvider>
+          <AuthProvider>
+            <ErrorBoundary>
+              <AppContent />
+            </ErrorBoundary>
+          </AuthProvider>
+        </RouterProvider>
+      </ToastProvider>
+    </ThemeProvider>
   );
 }

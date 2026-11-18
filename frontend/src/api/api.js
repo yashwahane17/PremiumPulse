@@ -3,7 +3,7 @@
  * Communicates with FastAPI backend endpoints for both Public Customer Portal and Admin Portal.
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8001/api';
 
 function getAuthHeaders() {
   const token = localStorage.getItem('premiumpulse_token');
@@ -79,16 +79,28 @@ export const api = {
   },
 
   async predictPremium(payload) {
-    const res = await fetch(`${API_BASE_URL}/predict`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(payload),
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.detail || 'Prediction failed. Please check inputs.');
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+    try {
+      const res = await fetch(`${API_BASE_URL}/predict`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.detail || 'Prediction failed. Please check inputs.');
+      }
+      return res.json();
+    } catch (err) {
+      clearTimeout(timeoutId);
+      if (err.name === 'AbortError') {
+        throw new Error('Prediction request timed out after 15 seconds. Please check backend server.');
+      }
+      throw err;
     }
-    return res.json();
   },
 
   async getHistory() {

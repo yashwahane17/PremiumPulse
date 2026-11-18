@@ -107,31 +107,31 @@ export default function UserProfilePage() {
 
   // BMI Category determination
   const getBmiCategory = (bmi) => {
-    if (bmi < 18.5) return { category: 'Underweight', color: 'text-amber-600 bg-amber-50 border-amber-200' };
-    if (bmi < 25) return { category: 'Normal / Healthy Weight', color: 'text-emerald-600 bg-emerald-50 border-emerald-200' };
-    if (bmi < 30) return { category: 'Overweight', color: 'text-orange-600 bg-orange-50 border-orange-200' };
-    return { category: 'Obese', color: 'text-rose-600 bg-rose-50 border-rose-200' };
+    if (bmi < 18.5) return { category: 'Underweight', color: 'text-amber-500 bg-amber-50 dark:bg-amber-950/60 border-amber-200 dark:border-amber-900' };
+    if (bmi < 25) return { category: 'Normal / Healthy Weight', color: 'text-emerald-500 bg-emerald-50 dark:bg-emerald-950/60 border-emerald-200 dark:border-emerald-900' };
+    if (bmi < 30) return { category: 'Overweight', color: 'text-amber-600 bg-amber-50 dark:bg-amber-950/60 border-amber-200 dark:border-amber-900' };
+    return { category: 'Obese', color: 'text-rose-600 bg-rose-50 dark:bg-rose-950/60 border-rose-200 dark:border-rose-900' };
   };
 
   const bmiInfo = getBmiCategory(liveBmi);
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8 space-y-6">
+    <div className="max-w-5xl mx-auto space-y-6 animate-fade-in">
       {/* Title & Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
         <div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-            <User className="w-6 h-6 text-blue-600" />
+          <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
+            <User className="w-6 h-6 text-[#3867FF]" />
             My Personal & Health Profile
           </h1>
-          <p className="text-sm text-slate-500 font-medium mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">
             Maintain your health biometrics and lifestyle parameters used by our AI agents to quote actuarial premiums.
           </p>
         </div>
 
         <button
           onClick={() => navigate('/predict')}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/20 transition-all cursor-pointer"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-[#3867FF] hover:bg-[#2954e6] text-white shadow-md shadow-blue-500/20 transition-all cursor-pointer"
         >
           <PlusCircle className="w-4 h-4" />
           <span>New Premium Estimate</span>
@@ -140,10 +140,10 @@ export default function UserProfilePage() {
 
       {/* Notifications */}
       {message && (
-        <div className={`p-4 rounded-xl border flex items-center justify-between text-xs font-semibold ${
+        <div className={`p-4 rounded-2xl border flex items-center justify-between text-xs font-semibold ${
           message.type === 'success' 
-            ? 'bg-emerald-50 border-emerald-200 text-emerald-800' 
-            : 'bg-rose-50 border-rose-200 text-rose-800'
+            ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-200 dark:border-emerald-900 text-emerald-800 dark:text-emerald-200' 
+            : 'bg-rose-50 dark:bg-rose-950/60 border-rose-200 dark:border-rose-900 text-rose-800 dark:text-rose-200'
         }`}>
           <div className="flex items-center gap-2">
             {message.type === 'success' ? <CheckCircle2 className="w-4 h-4 text-emerald-600" /> : <AlertCircle className="w-4 h-4 text-rose-600" />}
@@ -156,26 +156,26 @@ export default function UserProfilePage() {
       )}
 
       {/* Account Info Card */}
-      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
-        <h2 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-emerald-600" />
+      <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4">
+        <h2 className="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+          <ShieldCheck className="w-4 h-4 text-[#12B981]" />
           <span>Verified Account Information</span>
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+          <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700">
             <span className="text-[10px] uppercase font-bold text-slate-400 block">Full Legal Name</span>
-            <span className="font-bold text-slate-900 text-sm mt-0.5 block">{user?.full_name || 'Customer'}</span>
+            <span className="font-bold text-slate-900 dark:text-white text-sm mt-0.5 block">{user?.full_name || 'Customer'}</span>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+          <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700">
             <span className="text-[10px] uppercase font-bold text-slate-400 block">Registered Email</span>
-            <span className="font-bold text-slate-900 text-sm mt-0.5 block">{user?.email || 'user@example.com'}</span>
+            <span className="font-bold text-slate-900 dark:text-white text-sm mt-0.5 block truncate">{user?.email || 'user@example.com'}</span>
           </div>
 
-          <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+          <div className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700">
             <span className="text-[10px] uppercase font-bold text-slate-400 block">Access Role</span>
-            <span className="inline-flex items-center gap-1 font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded text-xs mt-1">
+            <span className="inline-flex items-center gap-1 font-bold text-[#3867FF] bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 px-2.5 py-0.5 rounded-full text-xs mt-1">
               {user?.role || 'USER'} (Customer)
             </span>
           </div>
@@ -185,11 +185,11 @@ export default function UserProfilePage() {
       {/* Interactive Health Profile Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Biometrics & Live BMI Section */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-3">
             <div>
-              <h2 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-                <Scale className="w-4 h-4 text-blue-600" />
+              <h2 className="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                <Scale className="w-4 h-4 text-[#3867FF]" />
                 <span>Biometric Indicators & Dynamic BMI Calculation</span>
               </h2>
               <p className="text-xs text-slate-400 mt-0.5">
@@ -198,12 +198,12 @@ export default function UserProfilePage() {
             </div>
 
             {/* Dynamic BMI Result Pill */}
-            <div className={`p-3 rounded-xl border flex items-center gap-3 ${bmiInfo.color}`}>
+            <div className={`p-3 rounded-2xl border flex items-center gap-3 ${bmiInfo.color}`}>
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider block">Live Calculated BMI</span>
-                <span className="text-xl font-black">{liveBmi}</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider block">Live BMI</span>
+                <span className="text-xl font-black font-mono">{liveBmi}</span>
               </div>
-              <span className="text-xs font-bold px-2 py-1 rounded-md bg-white/80 shadow-2xs">
+              <span className="text-xs font-bold px-2.5 py-1 rounded-xl bg-white dark:bg-slate-800 shadow-2xs">
                 {bmiInfo.category}
               </span>
             </div>
@@ -211,7 +211,7 @@ export default function UserProfilePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs">
             <div>
-              <label className="font-bold text-slate-700 block mb-1">Age (Years)</label>
+              <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">Age (Years)</label>
               <input
                 type="number"
                 name="age"
@@ -220,17 +220,17 @@ export default function UserProfilePage() {
                 value={formData.age}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500/20"
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-medium text-slate-900 dark:text-white"
               />
             </div>
 
             <div>
-              <label className="font-bold text-slate-700 block mb-1">Gender</label>
+              <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">Gender</label>
               <select
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-800 focus:bg-white"
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-medium text-slate-900 dark:text-white"
               >
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -239,7 +239,7 @@ export default function UserProfilePage() {
             </div>
 
             <div>
-              <label className="font-bold text-slate-700 block mb-1">Height (cm)</label>
+              <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">Height (cm)</label>
               <input
                 type="number"
                 name="height_cm"
@@ -249,170 +249,134 @@ export default function UserProfilePage() {
                 value={formData.height_cm}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500/20"
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-medium text-slate-900 dark:text-white"
               />
             </div>
 
             <div>
-              <label className="font-bold text-slate-700 block mb-1">Weight (kg)</label>
+              <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">Weight (kg)</label>
               <input
                 type="number"
                 name="weight_kg"
-                min="25"
-                max="300"
+                min="20"
+                max="250"
                 step="0.5"
                 value={formData.weight_kg}
                 onChange={handleChange}
                 required
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500/20"
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-medium text-slate-900 dark:text-white"
               />
             </div>
           </div>
         </div>
 
-        {/* Lifestyle & Wellness Factors */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
-          <h2 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-            <HeartPulse className="w-4 h-4 text-emerald-600" />
-            <span>Lifestyle & Cardiovascular Habits</span>
-          </h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 text-xs">
-            <div>
-              <label className="font-bold text-slate-700 block mb-1">Smoking Habit</label>
-              <select
-                name="smoker"
-                value={formData.smoker}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-800"
-              >
-                <option value="no">Non-Smoker (Lower Risk)</option>
-                <option value="yes">Smoker (High Risk Driver)</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="font-bold text-slate-700 block mb-1">Physical Activity</label>
-              <select
-                name="physical_activity"
-                value={formData.physical_activity}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-800"
-              >
-                <option value="low">Sedentary / Low</option>
-                <option value="moderate">Moderate Exercise</option>
-                <option value="high">High Activity / Athletic</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="font-bold text-slate-700 block mb-1">Daily Steps Target</label>
-              <input
-                type="number"
-                name="daily_steps"
-                min="0"
-                max="50000"
-                value={formData.daily_steps}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-800"
-              />
-            </div>
-
-            <div>
-              <label className="font-bold text-slate-700 block mb-1">Alcohol Consumption</label>
-              <select
-                name="alcohol"
-                value={formData.alcohol}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-800"
-              >
-                <option value="none">None / Teetotaler</option>
-                <option value="occasional">Occasional / Social</option>
-                <option value="frequent">Frequent</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Medical History & Policy Preferences */}
-        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
-          <h2 className="text-sm font-bold text-slate-800 flex items-center gap-2">
-            <Activity className="w-4 h-4 text-purple-600" />
-            <span>Clinical History & Policy Plan Preferences</span>
+        {/* Clinical History & Lifestyle Factors */}
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4">
+          <h2 className="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+            <Heart className="w-4 h-4 text-rose-500" />
+            <span>Clinical Biomarkers & Lifestyle Habits</span>
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
             <div>
-              <label className="font-bold text-slate-700 block mb-1">Chronic Conditions</label>
+              <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">Smoking Habit</label>
+              <select
+                name="smoker"
+                value={formData.smoker}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-medium text-slate-900 dark:text-white"
+              >
+                <option value="no">Non-Smoker (Standard)</option>
+                <option value="yes">Active Smoker (+310% Surcharge)</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">Physical Activity</label>
+              <select
+                name="physical_activity"
+                value={formData.physical_activity}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-medium text-slate-900 dark:text-white capitalize"
+              >
+                <option value="low">Low (Sedentary)</option>
+                <option value="moderate">Moderate (3-4 days/wk)</option>
+                <option value="high">High (Athletic cardio)</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">Daily Steps Target</label>
+              <input
+                type="number"
+                name="daily_steps"
+                min="500"
+                max="30000"
+                step="500"
+                value={formData.daily_steps}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-medium text-slate-900 dark:text-white"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs pt-2">
+            <div>
+              <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">Resting Heart Rate (bpm)</label>
+              <input
+                type="number"
+                name="heart_rate"
+                min="40"
+                max="160"
+                value={formData.heart_rate}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-medium text-slate-900 dark:text-white"
+              />
+            </div>
+
+            <div>
+              <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">Alcohol Intake</label>
+              <select
+                name="alcohol"
+                value={formData.alcohol}
+                onChange={handleChange}
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-medium text-slate-900 dark:text-white capitalize"
+              >
+                <option value="none">None</option>
+                <option value="occasional">Occasional</option>
+                <option value="regular">Regular</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="font-bold text-slate-700 dark:text-slate-300 block mb-1">Pre-Existing Conditions</label>
               <input
                 type="text"
                 name="medical_conditions"
-                placeholder="e.g. Hypertension, None"
                 value={formData.medical_conditions}
                 onChange={handleChange}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-800"
+                placeholder="e.g. None or Hypertension"
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl font-medium text-slate-900 dark:text-white"
               />
             </div>
-
-            <div>
-              <label className="font-bold text-slate-700 block mb-1">Dependents (Children)</label>
-              <input
-                type="number"
-                name="dependents"
-                min="0"
-                max="10"
-                value={formData.dependents}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-800"
-              />
-            </div>
-
-            <div>
-              <label className="font-bold text-slate-700 block mb-1">Coverage Tier</label>
-              <select
-                name="coverage_preference"
-                value={formData.coverage_preference}
-                onChange={handleChange}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-800"
-              >
-                <option value="standard">Standard Protection</option>
-                <option value="comprehensive">Comprehensive Shield</option>
-                <option value="premium">Platinum Elite</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="pt-2 flex items-center gap-3">
-            <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
-              <input
-                type="checkbox"
-                name="regular_checkups"
-                checked={formData.regular_checkups}
-                onChange={handleChange}
-                className="w-4 h-4 text-blue-600 rounded"
-              />
-              <span>I complete annual preventive health checkups</span>
-            </label>
           </div>
         </div>
 
-        {/* Submit Actions */}
-        <div className="flex items-center justify-between pt-2">
-          <button
-            type="button"
-            onClick={() => navigate('/dashboard')}
-            className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
-          >
-            ← Back to Dashboard
-          </button>
-
+        {/* Submit Action */}
+        <div className="flex justify-end pt-2">
           <button
             type="submit"
             disabled={saving}
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/20 transition-all cursor-pointer"
+            className="px-6 py-2.5 rounded-xl bg-[#3867FF] hover:bg-[#2954e6] text-white font-bold text-xs shadow-md shadow-blue-500/20 transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
           >
-            <Save className={`w-4 h-4 ${saving ? 'animate-spin' : ''}`} />
-            <span>{saving ? 'Updating...' : 'Save Health Profile'}</span>
+            {saving ? (
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            ) : (
+              <>
+                <Save className="w-4 h-4" />
+                <span>Save & Recalculate BMI</span>
+              </>
+            )}
           </button>
         </div>
       </form>
